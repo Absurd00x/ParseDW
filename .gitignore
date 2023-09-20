@@ -1,0 +1,17 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+female.txt
+male.txt
+*.session
+hashtable
+res.txt
+buff
+backup
+Kursk
+credentials.py
