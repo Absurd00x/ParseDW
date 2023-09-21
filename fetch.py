@@ -133,15 +133,17 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
 
   if unique:
     # remove duplicates
+    print("Filtering duplicates")
     with shelve.open("hashtable") as f:
       if "data" in f:
         images = f["data"]
         present = True
+        print(f"Found {len(images)} hash entries")
       else:
-        images = dict()
+        images = set()
         present = False
+        print("Didn't find any hash entries")
     buff = []
-    print("Filtering duplicates")
     async for message in client.iter_messages(dw_id):
       if message.id < last and present:
         break
@@ -153,9 +155,12 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
         for hashed in hashes:
           if hashed in images:
             duplicate = True
+        for hashed in hashes:
+          images.add(hashed)
         if duplicate:
           buff.append(message)
-    print("Deleting duplicates")
+    print(f"Total duplicates: {len(buff)}")
+    print("Removing...")
     for msg in buff:
       await msg.delete()
     with shelve.open("hashtable") as f:
