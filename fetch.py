@@ -145,7 +145,7 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
         print("Didn't find any hash entries")
     buff = []
     async for message in client.iter_messages(dw_id):
-      if message.id < last and present:
+      if message.id == last and present:
         break
       hashes = await extract_hashes(message)
       if hashes is None:
