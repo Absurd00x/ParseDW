@@ -3,6 +3,7 @@ from credentials import api_id, api_hash
 import shelve
 import hashlib
 import telethon.errors
+import re
 
 client = TelegramClient("my_session", api_id, api_hash)
 dw_id = 1234060895

@@ -209,5 +209,19 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
   print("Done")
 
 
+mask = input("Enter mask:\nmine sieve unique extract backup\n")
+if len(mask) != 5:
+  print("Mask length must be equal to 5. Terminating.")
+  exit(0)
+ok = True
+for symb in mask:
+  if symb != '0' and symb != '1':
+    ok = False
+if not ok:
+  print("Mask should consist of ones and zeros. Terminating.")
+  exit(0)
+
+args = list(map(lambda x: x == '1', mask))
+
 with client:
-  client.loop.run_until_complete(main(mine=True, sieve=True, unique=True, extract=True, backup=True))
+  client.loop.run_until_complete(main(*args))
