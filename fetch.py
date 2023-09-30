@@ -63,6 +63,13 @@ async def extract_age(message):
   return age
 
 
+with shelve.open("last_message_id") as f:
+  if "id" in f:
+    last = f["id"]
+  else:
+    last = 0
+
+
 async def main(mine=False, sieve=False, unique=False, extract=False, backup=False):
   last = 0
   async for message in client.iter_messages(dw_id):
@@ -230,3 +237,6 @@ args = list(map(lambda x: x == '1', mask))
 
 with client:
   client.loop.run_until_complete(main(*args))
+
+with shelve.open("last_message_id") as f:
+  f["id"] = last
