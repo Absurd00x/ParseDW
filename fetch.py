@@ -181,9 +181,6 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
         if age not in cnts:
           cnts[age] = 0
         cnts[age] += 1
-        cnt_total += 1
-        if message.id >= last:
-          cnt_new += 1
     for msg in buff:
       await msg.delete()
     keys = list(cnts.keys())
@@ -191,12 +188,20 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
     with open("res.txt", "w") as f:
       for key in keys:
         f.write(f"{key} {cnts[key]}\n")
+  cnt_total = 0
+  cnt_new = 0
+  async for message in client.iter_messages(dw_id):
+    cnt_total += 1
+    if message.id >= last:
+      cnt_new += 1
   print(f"New entries: {cnt_new}")
   print(f"Total entries: {cnt_total}")
   if backup:
     print("Creating backup")
     tmp = []
     async for msg in client.iter_messages(dw_id):
+      if msg.id == last:
+        break
       hashes = await extract_hashes(msg)
       age = await extract_age(msg)
       if hashes is None or age is None:
