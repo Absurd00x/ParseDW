@@ -66,6 +66,7 @@ async def extract_age(message):
 with shelve.open("last_message_id") as f:
   if "id" in f:
     last = f["id"]
+    print(f"Last message id: {last}")
   else:
     last = 0
 
