@@ -66,12 +66,12 @@ async def extract_age(message):
 with shelve.open("last_message_id") as f:
   if "id" in f:
     last = f["id"]
-    print(f"Last message id: {last}")
   else:
     last = 0
 
 
 async def main(mine=False, sieve=False, unique=False, extract=False, backup=False):
+  global last
   if mine:
     sieve = True
     unique = True
@@ -192,7 +192,7 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
   cnt_new = 0
   async for message in client.iter_messages(dw_id):
     cnt_total += 1
-    if message.id >= last:
+    if message.id > last:
       cnt_new += 1
   print(f"New entries: {cnt_new}")
   print(f"Total entries: {cnt_total}")
@@ -211,6 +211,7 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
     with shelve.open("backup/messages") as f:
       timestamp = str(datetime.datetime.now()).replace(' ', '_')
       f[f"data_{timestamp}"] = tmp
+  last = (await client.get_messages(dw_id))[0].id
   print("Done")
 
 
