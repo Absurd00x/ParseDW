@@ -71,12 +71,6 @@ with shelve.open("last_message_id") as f:
 
 
 async def main(mine=False, sieve=False, unique=False, extract=False, backup=False):
-  last = 0
-  async for message in client.iter_messages(dw_id):
-    if message.photo:
-      last = message.id
-      break
-  print("Got last message")
   if mine:
     sieve = True
     unique = True
@@ -173,8 +167,6 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
     with shelve.open("hashtable") as f:
       f["data"] = images
 
-  cnt_new = 0
-  cnt_total = 0
   if extract:
     # extract ages from messages
     print("Extracting ages from messages")
