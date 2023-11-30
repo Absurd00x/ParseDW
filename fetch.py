@@ -83,7 +83,7 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
                  "Сам найду(", "Поделюсь с другом", "Смотреть анкеты", "💳 Нет, буду платить дальше", "1 🚀")
     ind = 0
     finish_response = "1. Смотреть анкеты.\n2. Моя анкета.\n3. Я больше не хочу никого искать.\n***\n4. Пригласи друзей - получи больше лайков 😎."
-    flag = False
+    tries = 0
     while ind < len(responses):
       try:
         await client.send_message(dw_id, responses[ind])
@@ -104,9 +104,9 @@ async def main(mine=False, sieve=False, unique=False, extract=False, backup=Fals
       except Exception as e:
         print("Something went wrong when mining messages")
         print(e)
-        sleep(3 * 60)
-        if not flag:
-          flag = True
+        sleep(5 * 60)
+        if tries < 5:
+          tries += 1
         else:
           break
   if sieve:
